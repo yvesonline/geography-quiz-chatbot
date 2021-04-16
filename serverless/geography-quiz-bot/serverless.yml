@@ -1,0 +1,62 @@
+service: geography-quiz-bot
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: eu-west-2
+  profile: yvesweissig
+  tracing:
+    apiGateway: true
+    lambda: true
+  lambdaHashingVersion: 20201221
+
+resources:
+  Resources:
+    images:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: geography-quiz-bot-images
+    imagesPublicReadPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref images
+        PolicyDocument:
+          Statement: 
+            - Effect: Allow
+              Action:
+                - 's3:GetObject'
+              Resource: !Join
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref images
+                  - /*
+              Principal: '*'
+
+functions:
+  capital:
+    handler: handler.capital
+    events:
+    - http:
+        path: gqb/capital
+        method: post
+  capital-check:
+    handler: handler.capital_check
+    events:
+    - http:
+        path: gqb/capital-check
+        method: post
+  country:
+    handler: handler.country
+    events:
+    - http:
+        path: gqb/country
+        method: post
+  country-check:
+    handler: handler.country_check
+    events:
+    - http:
+        path: gqb/country-check
+        method: post

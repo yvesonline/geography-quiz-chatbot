@@ -1,0 +1,147 @@
+{
+    "friendlyName": "Geography Quiz Bot",
+    "logQueries": true,
+    "uniqueName": "geography-quiz-bot",
+    "defaults": {
+        "defaults": {
+            "assistant_initiation": "task://menu",
+            "fallback": "task://menu",
+            "collect": {
+                "validate_on_failure": "task://collect_fallback"
+            }
+        }
+    },
+    "styleSheet": {
+        "style_sheet": {
+            "collect": {
+                "validate": {
+                    "on_failure": {
+                        "repeat_question": false,
+                        "messages": [
+                            {
+                                "say": ""
+                            }
+                        ]
+                    },
+                    "on_success": {
+                        "say": ""
+                    },
+                    "max_attempts": 3
+                }
+            },
+            "voice": {
+                "say_voice": "Polly.Matthew"
+            }
+        }
+    },
+    "fieldTypes": [
+    ],
+    "tasks": [
+        {
+            "uniqueName": "collect_fallback",
+            "actions": {
+                "actions": [
+                    {
+                        "say": "I've got a bit lost now, apologies for that. Let's start again, how can I help you today?"
+                    },
+                    {
+                        "listen": true
+                    }
+                ]
+            },
+            "fields": [],
+            "samples": []
+        },
+        {
+            "uniqueName": "capital",
+            "actions": {
+                "actions": [
+                    {
+                        "redirect": {
+                            "uri": "https://87cwtct4i0.execute-api.eu-west-2.amazonaws.com/dev/gqb/capital",
+                            "method": "POST"
+                        }
+                    }
+                ]
+            },
+            "fields": [],
+            "samples": [
+                {
+                    "language": "en-US",
+                    "taggedText": "capital"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "Capital"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "CAPITAL"
+                }
+            ]
+        },
+        {
+            "uniqueName": "country",
+            "actions": {
+                "actions": [
+                    {
+                        "redirect": {
+                            "uri": "https://87cwtct4i0.execute-api.eu-west-2.amazonaws.com/dev/gqb/country",
+                            "method": "POST"
+                        }
+                    }
+                ]
+            },
+            "fields": [],
+            "samples": [
+                {
+                    "language": "en-US",
+                    "taggedText": "country"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "Country"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "COUNTRY"
+                }
+            ]
+        },
+        {
+            "uniqueName": "menu",
+            "actions": {
+                "actions": [
+                    {
+                        "say": "Welcome to the Geography Quiz Bot!\nWhat mode do you want to play?\nType 'capital' for guess the capital and 'country' for guess the country."
+                    },
+                    {
+                        "listen": true
+                    }
+                ]
+            },
+            "fields": [],
+            "samples": [
+                {
+                    "language": "en-US",
+                    "taggedText": "menu"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "start"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "hi"
+                },
+                {
+                    "language": "en-US",
+                    "taggedText": "hello"
+                }
+            ]
+        }
+    ],
+    "modelBuild": {
+        "uniqueName": "v0.1"
+    }
+}
