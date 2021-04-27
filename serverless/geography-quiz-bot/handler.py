@@ -57,6 +57,9 @@ BODY_ANSWER = {
             'say': ''
         },
         {
+            'remember': {}
+        },
+        {
             'listen': True
         }
     ]
@@ -116,14 +119,32 @@ def capital_check(event, context):
     event_body = parse_qs(event['body'])
     memory = json.loads(event_body['Memory'][0])
 
+    # score_total
+    # score_correct
+    scores = {}
+    for score_item in ['score_total', 'score_correct']:
+        if score_item in memory:
+            scores[score_item] = int(memory[score_item])
+        else:
+            scores[score_item] = 0
+
+    scores['score_total'] += 1
+
     if memory['correct_answer_key'].lower() == \
        memory['twilio']['collected_data']['questions']['answers']['capital']['answer'].lower():
         say = "Yes you're right, "
+        scores['score_correct'] += 1
     else:
         say = "No that's wrong, "
-    say += f"{memory['correct_answer_capital']} is the capital of {memory['correct_answer_country']}."
+    say += f"{memory['correct_answer_capital']} is the capital of {memory['correct_answer_country']}.\n"
+    say += f"You've got {scores['score_correct']} out of {scores['score_total']} right so far!"
 
     body['actions'][0]['say'] = say
+
+    body['actions'][1]['remember'] = {
+        'score_total': scores['score_total'],
+        'score_correct': scores['score_correct'],
+    }
 
     response = {
         'statusCode': 200,
@@ -212,14 +233,32 @@ def country_check(event, context):
     event_body = parse_qs(event['body'])
     memory = json.loads(event_body['Memory'][0])
 
+    # score_total
+    # score_correct
+    scores = {}
+    for score_item in ['score_total', 'score_correct']:
+        if score_item in memory:
+            scores[score_item] = int(memory[score_item])
+        else:
+            scores[score_item] = 0
+
+    scores['score_total'] += 1
+
     if memory['correct_answer_key'].lower() == \
        memory['twilio']['collected_data']['questions']['answers']['country']['answer'].lower():
         say = "Yes you're right, "
+        scores['score_correct'] += 1
     else:
         say = "No that's wrong, "
-    say += f"this is {memory['correct_answer_country_name']} ({memory['correct_answer_country_iso']})."
+    say += f"this is {memory['correct_answer_country_name']} ({memory['correct_answer_country_iso']}).\n"
+    say += f"You've got {scores['score_correct']} out of {scores['score_total']} right so far!"
 
     body['actions'][0]['say'] = say
+
+    body['actions'][1]['remember'] = {
+        'score_total': scores['score_total'],
+        'score_correct': scores['score_correct'],
+    }
 
     response = {
         'statusCode': 200,
