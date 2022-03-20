@@ -36,8 +36,28 @@ The project is laid out like this:
 
 ## Usage & Development
 
-...
+### Twilio Autopilot
 
-## Deployment & Hosting
+You can use the Twilio CLI to invoke and test the Twilio Autopilot locally, e.g.:
+```lang=bash
+$ cd autopilot/geography-quiz-bot
+$ twilio autopilot:deploy -l debug --target model
+$ twilio autopilot:simulate --assistant-sid ASSISTANT-SID
+```
 
-...
+To get help type `twilio autopilot --help`.
+
+### Serverless
+
+Similarily you can use the Serverless CLI to invoke and test the Python Lambdas locally, e.g.:
+```lang=bash
+$ cd serverless/geography-quiz-bot
+$ sls invoke local --function capital
+$ sls invoke local --function country
+```
+
+To get help type `sls --help`.
+
+## Blog
+
+You can find much more information about the chatbot in my blog post [Building a Simple Quiz Chatbot With Twilio Autopilot and Serverless](https://notes.weissig.me/2021/07/building-a-simple-quiz-chatbot-with-twilio-autopilot-and-serverless/).
